@@ -7,20 +7,13 @@ import json
 import scrapy
 from scrapy.http import HtmlResponse
 
-@pytest.mark.asyncio
-async def test_result_extraction():
+async def extract_results(matric, pword, folder):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-
-        folder = 'results'
-        os.makedirs(folder, exist_ok=True)
 
         page = await browser.new_page()
         url = 'https://stdportal.oouagoiwoye.edu.ng/index.php'
         await page.goto(url, timeout=0)
-
-        matric = input("Enter matric number: ")
-        pword = input("Enter password: ")
 
         await page.wait_for_selector('input#jamb')
         await page.wait_for_selector('input#sname')
@@ -43,14 +36,14 @@ async def test_result_extraction():
 
             name = await name_element.inner_text()
             status = await status_element.inner_text()
-            
+
             pattern = re.compile(r'^([A-Z]+),\s*([A-Z])[a-z]*(?:\s+([A-Z]))?[a-z]*')
 
             match = re.match(pattern, name)
             if match:
                 last_name = match.group(1)
                 first_name_initial = match.group(2)
-                middle_name_initial = match.group(3)
+                middle_name_initial = match.group(3) if match.group(3) else ''
                 formatted_name = f"{last_name} {first_name_initial}.{middle_name_initial}"
             else:
                 formatted_name = name
@@ -92,6 +85,25 @@ async def test_result_extraction():
 
         with open(file_path, 'w') as json_file:
             json.dump(your_result, json_file, indent=6)
-            print(f'Items extracted and saved')
+            print(f'Items extracted and saved for {formatted_name}')
 
         await browser.close()
+
+@pytest.mark.asyncio
+async def test_result_extraction():
+    folder = 'results'
+    os.makedirs(folder, exist_ok=True)
+
+    num_credentials = int(input("Enter the number of credential sets: "))
+
+    inputs = []
+    for i in range(num_credentials):
+        matric = input(f"Enter matric number {i + 1}: ")
+        pword = input(f"Enter password {i + 1}: ")
+        inputs.append({"matric": matric, "pword": pword})
+
+    tasks = [extract_results(input_data["matric"], input_data["pword"], folder) for input_data in inputs]
+    await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    asyncio.run(test_result_extraction())
