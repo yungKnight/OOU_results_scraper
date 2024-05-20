@@ -2,13 +2,13 @@
 A dynamic web scraper written in Python and based off Playwright and Scrapy that aims to extract student results from the university page at ease depending on user input and meant to be able to run in parallel in times of multiple input to save time 
 
 
-#PROJECT DEPENDENCIES VERSION
+# PROJECT DEPENDENCIES VERSION
 * Python >= 3.12.1
 * Scrapy >= 2.1.0
 * Playwright >= 1.43.0
 
 
-#INSTALLATION
+# INSTALLATION
 1. Clone the repository
 
 2. Navigate to your project directory
