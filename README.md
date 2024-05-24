@@ -38,7 +38,7 @@ A dynamic web scraper written in Python and based off Playwright and Scrapy that
 
 2. **Execute the scraper:**
    ```sh
-   python scrape_script.py
+   python oou_scraper.py
 
 ## Additional Information
 - **Parallel Execution:** The scraper is designed to run in parallel mode for handling multiple inputs simultaneously. Ensure your system meets the necessary requirements for parallel processing.
