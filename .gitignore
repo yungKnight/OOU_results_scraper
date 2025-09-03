@@ -1,0 +1,4 @@
+knr/
+results/
+__pycache__/
+.pytest*

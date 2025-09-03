@@ -1,23 +1,31 @@
-# OOU_results_scraper
-A dynamic web scraper written in Python and based off Playwright and Scrapy that aims to extract student results from the university page at ease depending on user input, meant to be able to run in parallel mode in times of multiple input to save time, and saves the extracted results for each student dynamically on your computer 
+# OOU Results Scraper
 
+A robust web scraper built with Python, leveraging Playwright and Scrapy to efficiently extract student results from the university portal. Designed for seamless batch processing with parallel execution capabilities to handle multiple student records simultaneously while dynamically saving extracted results to your local machine.
 
-## Project Dependencies Version
+## Features
+
+- **Parallel Processing**: Handle multiple student credentials concurrently to save time
+- **Dynamic Result Storage**: Automatically saves results for each student in organized JSON format
+- **Error Handling**: Gracefully handles cases where results are unavailable or network issues occur
+- **User-Friendly**: Interactive prompts for easy credential input
+
+## Project Dependencies
 
 - Python >= 3.12.1
 - Scrapy >= 2.1.0
 - Playwright >= 1.43.0
+- pytest >= 6.0.0
 
 ## Installation
 
-To set up this project, follow these steps:
+Follow these steps to set up the project:
 
 1. **Clone the repository:**
    ```sh
    git clone https://github.com/yungKnight/OOU_results_scraper.git
    ```
 
-2. **Check into directory:**
+2. **Navigate to the project directory:**
    ```sh
    cd OOU_results_scraper
    ```
@@ -27,30 +35,67 @@ To set up this project, follow these steps:
    python -m venv venv
    ```
 
-4. **Activate virtual environment: (On windows)**
+4. **Activate the virtual environment:**
+   
+   **On Windows:**
    ```sh
-   source venv\Scripts\activate
+   venv\Scripts\activate
+   ```
+   
+   **On macOS/Linux:**
+   ```sh
+   source venv/bin/activate
    ```
 
-5. **Install the required dependencies:**
+5. **Install required dependencies:**
    ```sh
    pip install -r requirements.txt
    ```
 
+6. **Install Playwright browser dependencies:**
+   ```sh
+   playwright install
+   ```
+
 ## Usage
-1. **Navigate to your project directory**
+
+1. **Navigate to your project directory:**
    ```sh
    cd path/to/OOU_results_scraper
-    ```
+   ```
 
-2. **Execute the scraper:**
+2. **Run the scraper:**
    ```sh
-   pytest oou_scraper.py
-    ```
+   pytest -s oou_scraper.py
+   ```
 
-3. When you run the script, it will prompt you to enter the matric number and password.
+3. **Follow the interactive prompts:**
+   - Enter the number of student credentials you want to process
+   - Input each student's matric number and password when prompted
+   - The scraper will process all credentials in parallel and save results automatically
 
+## Output
 
-## Additional Information
-- **Parallel Execution:** The scraper is designed to run in parallel mode for handling multiple inputs simultaneously. Ensure your system meets the necessary requirements for parallel processing.
-- **Dynamic Saving:** The results for each student are saved dynamically on your computer in the specified directory.
+- Results are saved in the `results/` directory
+- Each student's results are stored as a separate JSON file named `result_{StudentName}.json`
+- Files contain structured data with Session, Semester, Course, and Grade information
+
+## Error Handling
+
+The scraper includes comprehensive error handling for common scenarios:
+- **Unavailable Results**: Displays "Results not available for student at the moment" when results aren't accessible
+- **Network Issues**: Continues processing other students even if one fails
+- **Invalid Credentials**: Handles authentication errors gracefully
+
+## System Requirements
+
+- **Memory**: Sufficient RAM for parallel browser instances (recommended: 4GB+)
+- **Network**: Stable internet connection for accessing the university portal
+- **Storage**: Adequate disk space for saving result files
+
+## Troubleshooting
+
+- Ensure all dependencies are properly installed
+- Verify that Playwright browsers are installed using `playwright install`
+- Check your internet connection if the scraper fails to load pages
+- Make sure the university portal is accessible and operational
